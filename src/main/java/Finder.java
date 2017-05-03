@@ -16,6 +16,9 @@ class Finder {
     private File[] findAllFilesInCurrentDirectory() {
 
         File dir = new File(pathToFindIn);
+        if (!fileExtensionToFind.startsWith(".")) {
+            System.err.println("Extension of the files to delete must be starts with a dot (.) expml: .exe or '.txt'");
+        }
         return dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.endsWith(fileExtensionToFind);

@@ -14,8 +14,10 @@ class Deleter {
         if (filesToDelete.length > 0) {
             for (File file :
                     filesToDelete) {
+                System.out.println("Deleting... " + file.getName());
                 file.delete();
             }
+            System.out.println("It's all clear!");
         }
     }
 }

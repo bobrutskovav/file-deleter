@@ -8,9 +8,7 @@ class Finder {
     private String pathToFindIn;
     private String fileExtensionToFind;
 
-    Finder(String pathToFindIn, String fileExtensionToFind) {
-        this.pathToFindIn = pathToFindIn;
-        this.fileExtensionToFind = fileExtensionToFind;
+    public Finder(String normalizedCurrentDir, String fileExtension) {
     }
 
     private File[] findAllFilesInCurrentDirectory() {
@@ -28,5 +26,21 @@ class Finder {
 
     File[] findFiles() {
         return findAllFilesInCurrentDirectory();
+    }
+
+    public String getPathToFindIn() {
+        return pathToFindIn;
+    }
+
+    public void setPathToFindIn(String pathToFindIn) {
+        this.pathToFindIn = pathToFindIn;
+    }
+
+    public String getFileExtensionToFind() {
+        return fileExtensionToFind;
+    }
+
+    public void setFileExtensionToFind(String fileExtensionToFind) {
+        this.fileExtensionToFind = fileExtensionToFind;
     }
 }

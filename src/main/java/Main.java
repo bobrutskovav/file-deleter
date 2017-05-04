@@ -1,3 +1,4 @@
+import java.sql.Time;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -6,21 +7,43 @@ import java.util.ResourceBundle;
  */
 public class Main {
     public static void main(String[] args) {
+
+        ResourceBundle bundle = ResourceBundle.getBundle("help", Locale.getDefault());
+        String helpString = bundle.getString("help");
         if (args.length > 0 && args[0].equals("-help")) {
-            ResourceBundle bundle = ResourceBundle.getBundle("help", Locale.getDefault());
-            System.out.println(bundle.getString("help"));
+
+            System.out.println(helpString);
             System.exit(0);
         }
-        PathDetector detector = new PathDetector();
 
         String fileExtension = ".torrent";
-        if (args.length > 0 && args[0].startsWith(".")) {
+        if (args.length == 1 && args[0].startsWith(".")) {
             fileExtension = args[0];
+        } else if (args.length == 3 && args[2].startsWith(".")) {
+            fileExtension = args[2];
+        }
+        Application app = new Application(fileExtension);
+
+        if (args.length >= 2) {
+            switch (args[1]) {
+                case "-s":
+                    String timeToRestart = args[1];
+                    Timer timer = new Timer(timeToRestart);
+                    if (args.length == 3 && args[2].startsWith(".")) {
+                        app.setFileExtension(args[2]);
+                    }
+                    while (true) {
+                        app.doJob();
+                        timer.startWaitForNextRun();
+                    }
+                default:
+                    System.out.println(bundle.getString(helpString));
+
+            }
+        } else {
+            app.doJob();
         }
 
-        Finder finder = new Finder(detector.getNormalizedCurrentDir(), fileExtension);
-        Deleter deleter = new Deleter(finder.findFiles());
-        deleter.deleteFiles();
-        System.exit(0);
     }
+
 }

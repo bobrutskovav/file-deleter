@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 class Timer {
     private LocalDateTime nextDateToRun;
     private LocalDateTime currentTime;
-    private boolean isNeedToRun;
+    private boolean isInterrupt;
 
     public Timer(String periodToNextRun) {
         this.currentTime = LocalDateTime.now();
@@ -24,7 +24,7 @@ class Timer {
         }
     }
 
-    public void startWaitForNextRun() {
+    public void waitForNextJob() {
         while (currentTime.isBefore(nextDateToRun)) {
             try {
                 Thread.sleep(5000);
@@ -37,8 +37,18 @@ class Timer {
     }
 
     private int parseParam(String param) {
-        return Integer.parseInt(param.replaceAll("\\D+", ""));
+        try {
+            return Integer.parseInt(param.replaceAll("\\D+", ""));
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + param);
+        }
     }
 
+    public boolean isInterrupt() {
+        return isInterrupt;
+    }
 
+    public void setInterrupt(boolean interrupt) {
+        isInterrupt = interrupt;
+    }
 }

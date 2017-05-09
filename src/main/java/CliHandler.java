@@ -20,7 +20,7 @@ public class CliHandler {
 
     private void setOptions() {
         options.addOption("h", "Print help");
-        options.addOption("s", "service", true, "Starts program like a service, set's cooldown period exmpl: 30m or 1h");
+        options.addOption("s", "service", true, "Starts program like a service, set's cooldown period, exmpl: 30m or 1h");
         options.addOption("fe", "file extension", true, "File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent");
     }
 

@@ -1,16 +1,17 @@
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 /**
  * Created by aleksx on 04.05.2017.
  */
-public class CliHander {
+public class CliHandler {
 
     private Options options;
     private CommandLine line;
 
-    public CliHander() {
+    public CliHandler() {
 
         options = new Options();
         setOptions();
@@ -31,4 +32,28 @@ public class CliHander {
             throw new Exception("Print help and exit");
         }
     }
+
+    public String getFileExtension() {
+        return line.getOptionValue("fe", ".torrent");//By default app uses .torrent extension
+    }
+
+    public String getCooldownTime() {
+        if (line.hasOption("s")) {
+            return line.getOptionValue("s");
+        } else {
+            return "no";
+        }
+    }
+
+    public boolean isService() {
+        return line.hasOption("s");
+    }
+
+    public void printCliHelp() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Torrent Deleter", "Read following instructions for tuning this app",
+                options, "Developed by Aleksey Bobrutskov");
+    }
+
+
 }

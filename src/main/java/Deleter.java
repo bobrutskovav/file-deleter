@@ -6,10 +6,6 @@ import java.io.File;
 class Deleter {
     private File[] filesToDelete;
 
-    Deleter(File[] filesToDelete) {
-        this.filesToDelete = filesToDelete;
-    }
-
     void deleteFiles() {
         if (filesToDelete.length > 0) {
             for (File file :
@@ -19,5 +15,9 @@ class Deleter {
             }
             System.out.println("It's all clear!");
         }
+    }
+
+    public void setFilesToDelete(File[] filesToDelete) {
+        this.filesToDelete = filesToDelete;
     }
 }

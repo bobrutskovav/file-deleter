@@ -9,11 +9,12 @@ class PathDetector {
     String getNormalizedCurrentDir() {
         if (currentDirectory == null) {
             setCurrentDir();
+            int lastDotIndex = currentDirectory.lastIndexOf("\\.");
+            StringBuffer buffer = new StringBuffer(currentDirectory)
+                    .delete(lastDotIndex, lastDotIndex + 2);
+            currentDirectory = buffer.toString();
         }
-        int lastDotIndex = currentDirectory.lastIndexOf("\\.");
-        StringBuffer buffer = new StringBuffer(currentDirectory)
-                .delete(lastDotIndex, lastDotIndex + 2);
-        currentDirectory = buffer.toString();
+
         return currentDirectory;
     }
 

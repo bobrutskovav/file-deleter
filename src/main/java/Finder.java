@@ -8,9 +8,6 @@ class Finder {
     private String pathToFindIn;
     private String fileExtensionToFind;
 
-    public Finder(String normalizedCurrentDir, String fileExtension) {
-    }
-
     private File[] findAllFilesInCurrentDirectory() {
 
         File dir = new File(pathToFindIn);

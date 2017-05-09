@@ -1,21 +1,27 @@
+import java.io.File;
+
 /**
  * Created by ABobrutskov on 04.05.2017.
  */
 public class Application {
     private String fileExtension;
+    private PathDetector detector;
+    private Finder finder;
+    private Deleter deleter;
 
-
-    public Application(String fileExtension) {
-        this.fileExtension = fileExtension;
+    public Application() {
+        detector = new PathDetector();
+        finder = new Finder();
+        deleter = new Deleter();
     }
 
     public void doJob() {
-
-        PathDetector detector = new PathDetector();
-        Finder finder = new Finder(detector.getNormalizedCurrentDir(), fileExtension);
-        Deleter deleter = new Deleter(finder.findFiles());
+        String path = detector.getNormalizedCurrentDir();
+        finder.setPathToFindIn(path);
+        finder.setFileExtensionToFind(fileExtension);
+        File[] files = finder.findFiles();
+        deleter.setFilesToDelete(files);
         deleter.deleteFiles();
-        System.exit(0);
 
     }
 

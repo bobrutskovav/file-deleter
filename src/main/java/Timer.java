@@ -1,6 +1,4 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 /**
  * Created by aleksx on 04.05.2017.
@@ -21,6 +19,8 @@ class Timer {
             nextDateToRun = currentTime.plusHours(minutesOrHours);
         } else if (param.endsWith("m")) {
             nextDateToRun = currentTime.plusMinutes(minutesOrHours);
+        } else {
+            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + param);
         }
     }
 
@@ -37,7 +37,7 @@ class Timer {
     }
 
     private int parseParam(String param) {
-        return Integer.parseInt(param.split("\\d")[0]);
+        return Integer.parseInt(param.replaceAll("\\D+", ""));
     }
 
 

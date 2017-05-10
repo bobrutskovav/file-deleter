@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * by aleksx on 03.05.2017.
@@ -20,11 +21,12 @@ class Finder {
             if (!fileExtensionToFind.startsWith(".")) {
                 System.err.println("Extension of the files to delete must be starts with a dot (.) expml: .exe or '.txt'");
             } else {
-                allFindedFiles.addAll(findAllFilesWithExtension(fileExtensionToFind, dir));
+                ArrayList<File> finded = findAllFilesWithExtension(fileExtensionToFind, dir);
+                allFindedFiles.addAll(finded);
             }
         }
 
-        return (File[]) allFindedFiles.toArray();
+        return allFindedFiles.toArray(new File[allFindedFiles.size()]);
 
     }
 
@@ -34,12 +36,13 @@ class Finder {
 
 
     private ArrayList<File> findAllFilesWithExtension(String fileExtension, File catalog) {
-        return (ArrayList<File>) Arrays.asList(catalog.listFiles(new FilenameFilter() {
+        List<File> list = Arrays.asList(catalog.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(fileExtension);
             }
         }));
+        return new ArrayList<File>(list);
     }
 
     public String getPathToFindIn() {

@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
         Timer timer;
         Application app;
+        TrayController controller;
         CliHandler cliHandler = new CliHandler();
 
         try {
@@ -16,6 +17,7 @@ public class Main {
             if (cliHandler.isService()) {
                 String timeToRestart = cliHandler.getCooldownTime();
                 timer = new Timer(timeToRestart);
+                controller = new TrayController(app.getFileExtension(), timer);
                 while (!timer.isInterrupt()) {
                     app.doJob();
                     timer.waitForNextJob();

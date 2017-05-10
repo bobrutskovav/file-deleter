@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.stream.Stream;
 
 /**
  * Created by aleksx on 10.05.2017.
  */
 public class TrayController {
-    String fileExtension;
+    String[] fileExtensions;
     private Timer timer;
     private SystemTray tray;
     private Image image;
@@ -17,10 +18,10 @@ public class TrayController {
     private JPopupMenu popupMenu;
 
 
-    public TrayController(String fileExtensionToShow, Timer timerToControl) {
+    public TrayController(String[] fileExtensionsToShow, Timer timerToControl) {
         if (SystemTray.isSupported()) {
             timer = timerToControl;
-            this.fileExtension = fileExtensionToShow;
+            this.fileExtensions = fileExtensionsToShow;
             tray = SystemTray.getSystemTray();
             image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("/image/icon32.png"));
             setUpTray();
@@ -52,8 +53,10 @@ public class TrayController {
         ActionListener actionListener = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+                StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running for files :");
+                Stream.of(fileExtensions).forEach(s -> massageBuffer.append("\\n " + s));
                 icon.displayMessage("Torrent Deleter Service",
-                        "Torrent Deleter is running for files " + fileExtension,
+                        massageBuffer.toString(),
                         TrayIcon.MessageType.INFO);
             }
         };

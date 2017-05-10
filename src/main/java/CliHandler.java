@@ -1,7 +1,4 @@
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
+import org.apache.commons.cli.*;
 
 /**
  * Created by aleksx on 04.05.2017.
@@ -21,7 +18,9 @@ public class CliHandler {
     private void setOptions() {
         options.addOption("h", "Print help");
         options.addOption("s", "service", true, "Starts program like a service, set's cooldown period, exmpl: 30m or 1h");
-        options.addOption("fe", "file extension", true, "File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent");
+        //  options.addOption("fe", "file extension", true, "File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent");
+        Option fe = Option.builder("fe").desc("File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent").hasArgs().longOpt("fileextensions").build();
+        options.addOption(fe);
     }
 
     public void parse(String[] args) throws Exception {
@@ -33,8 +32,8 @@ public class CliHandler {
         }
     }
 
-    public String getFileExtension() {
-        return line.getOptionValue("fe", ".torrent");//By default app uses .torrent extension
+    public String[] getFileExtension() {
+        return line.getOptionValues("fe");//By default app uses .torrent extension
     }
 
     public String getCooldownTime() {

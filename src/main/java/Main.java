@@ -12,12 +12,16 @@ public class Main {
             cliHandler.parse(args);
 
             app = new Application();
+            String[] fileExtensions = cliHandler.getFileExtension();
+            if (fileExtensions == null) {
+                fileExtensions = new String[]{".torrent"};
+            }
             app.setFileExtension(cliHandler.getFileExtension());
 
             if (cliHandler.isService()) {
                 String timeToRestart = cliHandler.getCooldownTime();
                 timer = new Timer(timeToRestart);
-                controller = new TrayController(app.getFileExtension(), timer);
+                controller = new TrayController(app.getFileExtensions(), timer);
                 while (!timer.isInterrupt()) {
                     app.doJob();
                     timer.waitForNextJob();

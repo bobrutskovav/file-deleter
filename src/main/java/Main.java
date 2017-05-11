@@ -16,7 +16,7 @@ public class Main {
             if (fileExtensions == null) {
                 fileExtensions = new String[]{".torrent"};
             }
-            app.setFileExtension(cliHandler.getFileExtension());
+            app.setFileExtension(fileExtensions);
 
             if (cliHandler.isService()) {
                 String timeToRestart = cliHandler.getCooldownTime();

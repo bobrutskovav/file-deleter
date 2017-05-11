@@ -63,8 +63,15 @@ class Application {
         isService = service;
     }
 
-    public void setOlderValue(String value) {
-        finder.setDeleteDate();
+    public void setPeriodToDelete(String value) {
+        if (value != null) {
+            finder.setPeriodToDelete(value);
+        }
     }
+
+    public void setDeepSearch(boolean isDeepSearch) {
+        finder.setDeepSearch(isDeepSearch);
+    }
+
 
 }

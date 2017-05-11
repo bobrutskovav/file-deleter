@@ -12,6 +12,7 @@ import java.util.TimeZone;
 class Finder {
     private boolean isDeepSearch;
     private String pathToFindIn;
+    private String periodToDelete;
     private ArrayList<String> fileExtensions;
     private ArrayList<File> result = new ArrayList<>();
     private LocalDateTime deleteDate;
@@ -31,7 +32,11 @@ class Finder {
             if (isDeepSearch && file.isDirectory()) {
                 findAllFilesInCurrentDirectory(file.getAbsolutePath());
             } else {
-                if (isValidExtension(file) && isOlderThanDeleteDate(file)) result.add(file);
+                if (isValidExtension(file)) {
+                    if (isOlderThanDeleteDate(file)) {
+                        result.add(file);
+                    }
+                }
             }
         }
     }
@@ -54,7 +59,11 @@ class Finder {
 
 
     public ArrayList<File> findFiles() {
+        if (deleteDate == null) {
+            updateDeleteDate();
+        }
         findAllFilesInCurrentDirectory(pathToFindIn);
+        updateDeleteDate();
         return result;
     }
 
@@ -79,7 +88,7 @@ class Finder {
         {
             if (timestamp == 0)
                 return null;
-            return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone
+            return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
                     .getDefault().toZoneId());
         }
     }
@@ -104,14 +113,21 @@ class Finder {
     private ArrayList<File> findAllFilesInCurrentDir(String dirPath) {
         File currentDir = new File(dirPath);
         List<File> files = Arrays.asList(currentDir.listFiles());
-        ArrayList<File> result = new ArrayList<>(files);
-        return result;
+        return new ArrayList<>(files);
     }
 
-    public void setDeleteDate(String period) {
-        if (period.endsWith("d")) {
-            //ToDo доделать тут
+    public void updateDeleteDate() {
+        if (periodToDelete != null) {
+            long paramValue = parseParam(periodToDelete);
+            LocalDateTime now = LocalDateTime.now();
+            if (periodToDelete.endsWith("d")) deleteDate = now.minusDays(paramValue);
+            else if (periodToDelete.endsWith("w")) deleteDate = now.minusWeeks(paramValue);
+            else if (periodToDelete.endsWith("mn")) deleteDate = now.minusMonths(paramValue);
         }
+    }
+
+    public void setPeriodToDelete(String periodToDelete) {
+        this.periodToDelete = periodToDelete;
     }
 
     public void setDeepSearch(boolean deepSearch) {
@@ -119,11 +135,11 @@ class Finder {
     }
 
     //ToDo выделить какой нибудь хелпер(из таймера тоже)
-    private int parseParam(String param) {
+    private long parseParam(String param) {
         try {
-            return Integer.parseInt(param.replaceAll("\\D+", ""));
+            return Long.parseLong(param.replaceAll("\\D+", ""));
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + param);
+            throw new IllegalArgumentException("Invalid Parameter for -od flag : " + param);
         }
     }
 }

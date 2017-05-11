@@ -35,7 +35,8 @@ class CliHandler {
         DefaultParser parser = new DefaultParser();
         line = parser.parse(options, args);
         if (line.hasOption("help")) {
-            throw new Exception("Print help and exit");
+            printCliHelp();
+            System.exit(0);
         }
     }
 
@@ -72,7 +73,7 @@ class CliHandler {
     public void printCliHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Torrent Deleter", "Read following instructions for tuning this app",
-                options, "Developed by Aleksey Bobrutskov");
+                options, "Developed by Aleksey Bobrutskov, alekssh1fter@gmail.com , github.com/bobrutskovav");
     }
 
 

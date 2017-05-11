@@ -27,6 +27,9 @@ public class Main {
                 controller.makeATray();
 
             }
+            String isOlderValue = cliHandler.getOlderThenPerion();
+            app.setPeriodToDelete(isOlderValue);
+            app.setDeepSearch(cliHandler.getDeepSearch());
 
             app.start();
             System.exit(0);

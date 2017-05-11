@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by ABobrutskov on 04.05.2017.
@@ -19,7 +20,7 @@ public class Application {
         String path = detector.getNormalizedCurrentDir();
         finder.setPathToFindIn(path);
         finder.setFileExtensionsToFind(fileExtensions);
-        File[] files = finder.findFiles();
+        ArrayList<File> files = finder.findFiles();
         deleter.setFilesToDelete(files);
         deleter.deleteFiles();
 

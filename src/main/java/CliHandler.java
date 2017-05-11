@@ -18,7 +18,7 @@ public class CliHandler {
     private void setOptions() {
         options.addOption("h", "Print help");
         options.addOption("s", "service", true, "Starts program like a service, set's cooldown period, exmpl: 30m or 1h");
-        Option fe = Option.builder("fe").desc("File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent").hasArgs().longOpt("fileextensions").build();
+        Option fe = Option.builder("fe").desc("File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent , can gets one or more arguments , exmlp : .torrent .exe .other").hasArgs().longOpt("fileextensions").build();
         options.addOption(fe);
     }
 

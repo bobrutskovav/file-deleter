@@ -1,13 +1,14 @@
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * by aleksx on 03.05.2017.
  */
 class Deleter {
-    private File[] filesToDelete;
+    private ArrayList<File> filesToDelete;
 
     void deleteFiles() {
-        if (filesToDelete.length > 0) {
+        if (filesToDelete.size() > 0) {
             for (File file :
                     filesToDelete) {
                 System.out.println("Deleting... " + file.getName());
@@ -17,7 +18,7 @@ class Deleter {
         }
     }
 
-    public void setFilesToDelete(File[] filesToDelete) {
+    public void setFilesToDelete(ArrayList<File> filesToDelete) {
         this.filesToDelete = filesToDelete;
     }
 }

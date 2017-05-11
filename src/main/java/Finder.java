@@ -11,7 +11,7 @@ class Finder {
     private String pathToFindIn;
     private String[] fileExtensions;
 
-    private File[] findAllFilesInCurrentDirectory() {
+    private ArrayList<File> findAllFilesInCurrentDirectory() {
 
 
         ArrayList<File> allFindedFiles = new ArrayList<>();
@@ -26,11 +26,11 @@ class Finder {
             }
         }
 
-        return allFindedFiles.toArray(new File[allFindedFiles.size()]);
+        return allFindedFiles;
 
     }
 
-    File[] findFiles() {
+    ArrayList<File> findFiles() {
         return findAllFilesInCurrentDirectory();
     }
 

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * by aleksx on 03.05.2017.
  */
@@ -11,9 +13,9 @@ public class Main {
             cliHandler.parse(args);
 
             app = new Application();
-            String[] fileExtensions = cliHandler.getFileExtension();
-            if (fileExtensions == null) {
-                fileExtensions = new String[]{".torrent"};
+            ArrayList<String> fileExtensions = cliHandler.getFileExtension();
+            if (fileExtensions.isEmpty()) {
+                fileExtensions.add(".torrent");
             }
             app.setFileExtension(fileExtensions);
 
@@ -25,6 +27,7 @@ public class Main {
                 controller.makeATray();
 
             }
+
             app.start();
             System.exit(0);
 

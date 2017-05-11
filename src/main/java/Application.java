@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * Created by ABobrutskov on 04.05.2017.
  */
 class Application {
-    private String[] fileExtensions;
+    private ArrayList<String> fileExtensions;
     private PathDetector detector;
     private Finder finder;
     private Deleter deleter;
@@ -39,11 +39,11 @@ class Application {
         }
     }
 
-    public void setFileExtension(String[] fileExtension) {
+    public void setFileExtension(ArrayList<String> fileExtension) {
         this.fileExtensions = fileExtension;
     }
 
-    public String[] getFileExtensions() {
+    public ArrayList<String> getFileExtensions() {
         return fileExtensions;
     }
 
@@ -62,4 +62,9 @@ class Application {
     public void setService(boolean service) {
         isService = service;
     }
+
+    public void setOlderValue(String value) {
+        finder.setDeleteDate();
+    }
+
 }

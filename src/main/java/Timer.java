@@ -7,27 +7,29 @@ class Timer {
     private LocalDateTime nextDateToRun;
     private LocalDateTime currentTime;
     private boolean isInterrupt;
+    private String stringTimeToNext;
 
     public Timer(String periodToNextRun) {
         this.currentTime = LocalDateTime.now();
-        setNextDateToRun(periodToNextRun);
+        this.stringTimeToNext = periodToNextRun;
+        setNextDateToRun();
     }
 
-    private void setNextDateToRun(String param) {
-        int minutesOrHours = parseParam(param);
-        if (param.endsWith("h")) {
+    private void setNextDateToRun() {
+        int minutesOrHours = parseParam(stringTimeToNext);
+        if (stringTimeToNext.endsWith("h")) {
             nextDateToRun = currentTime.plusHours(minutesOrHours);
-        } else if (param.endsWith("m")) {
+        } else if (stringTimeToNext.endsWith("m")) {
             nextDateToRun = currentTime.plusMinutes(minutesOrHours);
         } else {
-            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + param);
+            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + stringTimeToNext);
         }
     }
 
     public void waitForNextJob() {
         while (currentTime.isBefore(nextDateToRun)) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

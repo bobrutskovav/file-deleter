@@ -3,7 +3,7 @@ import org.apache.commons.cli.*;
 /**
  * Created by aleksx on 04.05.2017.
  */
-public class CliHandler {
+class CliHandler {
 
     private Options options;
     private CommandLine line;

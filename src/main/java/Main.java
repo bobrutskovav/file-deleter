@@ -3,7 +3,6 @@
  */
 public class Main {
     public static void main(String[] args) {
-        Timer timer;
         Application app;
         TrayController controller;
         CliHandler cliHandler = new CliHandler();
@@ -19,17 +18,16 @@ public class Main {
             app.setFileExtension(fileExtensions);
 
             if (cliHandler.isService()) {
+                app.setService(true);
                 String timeToRestart = cliHandler.getCooldownTime();
-                timer = new Timer(timeToRestart);
-                controller = new TrayController(app.getFileExtensions(), timer);
-                while (!timer.isInterrupt()) {
-                    app.doJob();
-                    timer.waitForNextJob();
-                }
-            } else {
-                app.doJob();
-                System.exit(0);
+                app.setTimer(new Timer(timeToRestart));
+                controller = new TrayController(app);
+                controller.makeATray();
+
             }
+            app.start();
+            System.exit(0);
+
         } catch (Exception e) {
             cliHandler.printCliHelp();
             System.exit(0);

@@ -9,29 +9,33 @@ import java.util.stream.Stream;
 /**
  * Created by aleksx on 10.05.2017.
  */
-public class TrayController {
+class TrayController {
     String[] fileExtensions;
-    private Timer timer;
     private SystemTray tray;
     private Image image;
     private TrayIcon icon;
     private JPopupMenu popupMenu;
+    private Application app;
 
 
-    public TrayController(String[] fileExtensionsToShow, Timer timerToControl) {
+    public TrayController(Application appToControl) {
         if (SystemTray.isSupported()) {
-            timer = timerToControl;
-            this.fileExtensions = fileExtensionsToShow;
+            this.app = appToControl;
             tray = SystemTray.getSystemTray();
             image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("/image/icon32.png"));
             setUpTray();
-            try {
-                tray.add(icon);
-            } catch (AWTException e) {
-                e.printStackTrace();
-            }
+
         }
     }
+
+    public void makeATray() {
+        try {
+            tray.add(icon);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private void setUpTray() {
@@ -40,6 +44,7 @@ public class TrayController {
 
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Exiting...");
+                app.getTimer().setInterrupt(true);
                 System.exit(0);
             }
         };
@@ -55,6 +60,7 @@ public class TrayController {
             public void actionPerformed(ActionEvent e) {
                 StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running for files :");
                 Stream.of(fileExtensions).forEach(s -> massageBuffer.append("\\n " + s));
+                massageBuffer.append("\\n and refresh time: " + app.getTimer());
                 icon.displayMessage("Torrent Deleter Service",
                         massageBuffer.toString(),
                         TrayIcon.MessageType.INFO);

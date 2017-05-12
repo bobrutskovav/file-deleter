@@ -9,7 +9,7 @@ import java.util.List;
  */
 class CliHandler {
 
-    private Options options;
+    private final Options options;
     private CommandLine line;
 
     public CliHandler() {
@@ -48,10 +48,10 @@ class CliHandler {
         ArrayList<String> result;
         if (array != null) {
             tempList = Arrays.asList(array);
-            result = new ArrayList<String>(tempList);
+            result = new ArrayList<>(tempList);
             return result;
         } else {
-            result = new ArrayList<String>();
+            result = new ArrayList<>();
             return result;
         }
     }

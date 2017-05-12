@@ -6,11 +6,11 @@ import java.util.ArrayList;
  */
 class Application {
     private ArrayList<String> fileExtensions;
-    private PathDetector detector;
-    private Finder finder;
-    private Deleter deleter;
+    private final PathDetector detector;
+    private final Finder finder;
+    private final Deleter deleter;
     private Timer timer;
-    boolean isService;
+    private boolean isService;
 
     public Application() {
         detector = new PathDetector();
@@ -43,9 +43,11 @@ class Application {
         this.fileExtensions = fileExtension;
     }
 
-    public ArrayList<String> getFileExtensions() {
-        return fileExtensions;
-    }
+// --Commented out by Inspection START (12.05.2017 16:30):
+//    public ArrayList<String> getFileExtensions() {
+//        return fileExtensions;
+//    }
+// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public Timer getTimer() {
         return timer;
@@ -55,9 +57,11 @@ class Application {
         this.timer = timer;
     }
 
-    public boolean isService() {
-        return isService;
-    }
+// --Commented out by Inspection START (12.05.2017 16:30):
+//    public boolean isService() {
+//        return isService;
+//    }
+// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setService(boolean service) {
         isService = service;

@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,7 +9,7 @@ import java.util.stream.Stream;
  * Created by aleksx on 10.05.2017.
  */
 class TrayController {
-    String[] fileExtensions;
+    private String[] fileExtensions;
     private SystemTray tray;
     private Image image;
     private TrayIcon icon;
@@ -40,13 +39,10 @@ class TrayController {
 
     private void setUpTray() {
 
-        ActionListener exitListener = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Exiting...");
-                app.getTimer().setInterrupt(true);
-                System.exit(0);
-            }
+        ActionListener exitListener = e -> {
+            System.out.println("Exiting...");
+            app.getTimer().setInterrupt(true);
+            System.exit(0);
         };
 
         popupMenu = new JPopupMenu();
@@ -55,16 +51,12 @@ class TrayController {
         popupMenu.add(defaultItem);
 
         icon = new TrayIcon(image, "Torrent Deleter");
-        ActionListener actionListener = new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running for files :");
-                Stream.of(fileExtensions).forEach(s -> massageBuffer.append("\\n " + s));
-                massageBuffer.append("\\n and refresh time: " + app.getTimer());
-                icon.displayMessage("Torrent Deleter Service",
-                        massageBuffer.toString(),
-                        TrayIcon.MessageType.INFO);
-            }
+        ActionListener actionListener = e -> {
+            StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running for files :");
+            Stream.of(fileExtensions).forEach(s -> massageBuffer.append("\\n " + s));
+            icon.displayMessage("Torrent Deleter Service",
+                    massageBuffer.toString(),
+                    TrayIcon.MessageType.INFO);
         };
 
         icon.setImageAutoSize(true);

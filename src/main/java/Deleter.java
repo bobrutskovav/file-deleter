@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * by aleksx on 03.05.2017.
  */
 class Deleter {
-    private FileUtils utils32 = FileUtils.getInstance();
+    private final FileUtils utils32 = FileUtils.getInstance();
     private ArrayList<File> filesToDelete;
     private boolean isNeedDeleteToBin;
 

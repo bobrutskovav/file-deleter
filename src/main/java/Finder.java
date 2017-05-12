@@ -14,7 +14,7 @@ class Finder {
     private String pathToFindIn;
     private String periodToDelete;
     private ArrayList<String> fileExtensions;
-    private ArrayList<File> result = new ArrayList<>();
+    private final ArrayList<File> result = new ArrayList<>();
     private LocalDateTime deleteDate;
 
     private void findAllFilesInCurrentDirectory(String path) {
@@ -43,11 +43,7 @@ class Finder {
 
     private boolean isValidExtension(File file) {
         if (fileExtensions.contains("all")) {
-            if (file.getName().contains("TorrentDeleter") && file.getName().endsWith(".jar")) {
-                return false;
-            } else {
-                return true;
-            }
+            return !(file.getName().contains("TorrentDeleter") && file.getName().endsWith(".jar"));
         }
         String fileName = file.getName();
         boolean isValid = false;
@@ -78,11 +74,7 @@ class Finder {
             LocalDateTime dateOfLastModifedOfFile;
             long currentlastModTimestamp = file.lastModified();
             dateOfLastModifedOfFile = parseLongToLocalDateTime(currentlastModTimestamp);
-            if (deleteDate.isAfter(dateOfLastModifedOfFile)) {
-                isOld = true;
-            } else {
-                isOld = false;
-            }
+            isOld = deleteDate.isAfter(dateOfLastModifedOfFile);
         }
         return isOld;
     }
@@ -97,17 +89,21 @@ class Finder {
         }
     }
 
-    public String getPathToFindIn() {
-        return pathToFindIn;
-    }
+// --Commented out by Inspection START (12.05.2017 16:30):
+//    public String getPathToFindIn() {
+//        return pathToFindIn;
+//    }
+// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setPathToFindIn(String pathToFindIn) {
         this.pathToFindIn = pathToFindIn;
     }
 
-    public ArrayList<String> getFileExtensionToFind() {
-        return fileExtensions;
-    }
+// --Commented out by Inspection START (12.05.2017 16:30):
+//    public ArrayList<String> getFileExtensionToFind() {
+//        return fileExtensions;
+//    }
+// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setFileExtensionsToFind(ArrayList<String> fileExtensionsToFind) {
         this.fileExtensions = fileExtensionsToFind;
@@ -120,7 +116,7 @@ class Finder {
         return new ArrayList<>(files);
     }
 
-    public void updateDeleteDate() {
+    private void updateDeleteDate() {
         if (periodToDelete != null) {
             long paramValue = parseParam(periodToDelete);
             LocalDateTime now = LocalDateTime.now();

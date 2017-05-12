@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * by aleksx on 03.05.2017.
  */
-public class Main {
+class Main {
     public static void main(String[] args) {
         Application app;
         TrayController controller;

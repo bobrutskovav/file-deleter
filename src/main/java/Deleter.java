@@ -22,7 +22,7 @@ class Deleter {
                     utils32.moveToTrash(filesTemp);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("Can't delete this files to bin,please get me a bugreport on github.com/bobrutskovav");
+                    System.out.println("Can't delete this files to bin,please get me a bug report on github.com/bobrutskovav");
                 }
             } else if (!isNeedDeleteToBin) {
                 for (File file :

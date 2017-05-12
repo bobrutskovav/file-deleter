@@ -43,7 +43,11 @@ class Finder {
 
     private boolean isValidExtension(File file) {
         if (fileExtensions.contains("all")) {
-            return true;
+            if (file.getName().contains("TorrentDeleter") && file.getName().endsWith(".jar")) {
+                return false;
+            } else {
+                return true;
+            }
         }
         String fileName = file.getName();
         boolean isValid = false;

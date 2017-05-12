@@ -10,12 +10,12 @@ class Timer {
     private final String stringTimeToNext;
 
     public Timer(String periodToNextRun) {
-        this.currentTime = LocalDateTime.now();
         this.stringTimeToNext = periodToNextRun;
         setNextDateToRun();
     }
 
     private void setNextDateToRun() {
+        currentTime = LocalDateTime.now();
         int minutesOrHours = parseParam(stringTimeToNext);
         if (stringTimeToNext.endsWith("h")) {
             nextDateToRun = currentTime.plusHours(minutesOrHours);
@@ -29,13 +29,12 @@ class Timer {
     public void waitForNextJob() {
         while (currentTime.isBefore(nextDateToRun)) {
             try {
-                Thread.sleep(60000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            currentTime = LocalDateTime.now();
         }
-
+        setNextDateToRun();
     }
 
     private int parseParam(String param) {
@@ -53,4 +52,5 @@ class Timer {
     public void setInterrupt(boolean interrupt) {
         isInterrupt = interrupt;
     }
+
 }

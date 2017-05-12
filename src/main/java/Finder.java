@@ -14,7 +14,7 @@ class Finder {
     private String pathToFindIn;
     private String periodToDelete;
     private ArrayList<String> fileExtensions;
-    private final ArrayList<File> result = new ArrayList<>();
+    private ArrayList<File> result = new ArrayList<>();
     private LocalDateTime deleteDate;
 
     private void findAllFilesInCurrentDirectory(String path) {
@@ -27,14 +27,16 @@ class Finder {
          * полученый результат - прогнать на проверку:
          * если ты старый - в результат
          */
-        for (File file :
-                allFindedFiles) {
-            if (isDeepSearch && file.isDirectory()) {
-                findAllFilesInCurrentDirectory(file.getAbsolutePath());
-            } else {
-                if (isValidExtension(file)) {
-                    if (isOlderThanDeleteDate(file)) {
-                        result.add(file);
+        if (!allFindedFiles.isEmpty()) {
+            for (File file :
+                    allFindedFiles) {
+                if (isDeepSearch && file.isDirectory()) {
+                    findAllFilesInCurrentDirectory(file.getAbsolutePath());
+                } else {
+                    if (isValidExtension(file)) {
+                        if (isOlderThanDeleteDate(file)) {
+                            result.add(file);
+                        }
                     }
                 }
             }
@@ -141,6 +143,11 @@ class Finder {
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Invalid Parameter for -od flag : " + param);
         }
+    }
+
+
+    public void clearResultStorage() {
+        result.clear();
     }
 }
 

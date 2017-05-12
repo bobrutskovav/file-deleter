@@ -23,8 +23,12 @@ class Application {
         finder.setPathToFindIn(path);
         finder.setFileExtensionsToFind(fileExtensions);
         ArrayList<File> files = finder.findFiles();
-        deleter.setFilesToDelete(files);
-        deleter.deleteFiles();
+        if (!files.isEmpty()) {
+            deleter.setFilesToDelete(files);
+            deleter.deleteFiles();
+            finder.clearResultStorage();
+        }
+
 
     }
 

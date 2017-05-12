@@ -30,6 +30,7 @@ public class Main {
             String isOlderValue = cliHandler.getOlderThenPerion();
             app.setPeriodToDelete(isOlderValue);
             app.setDeepSearch(cliHandler.getDeepSearch());
+            app.setNeedDeleteToBin(cliHandler.getIsNotToBin());
 
             app.start();
             System.exit(0);

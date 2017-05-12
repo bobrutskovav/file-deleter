@@ -73,5 +73,9 @@ class Application {
         finder.setDeepSearch(isDeepSearch);
     }
 
+    public void setNeedDeleteToBin(boolean isNeedDeleteToBin) {
+        deleter.setNeedDeleteToBin(isNeedDeleteToBin);
+    }
+
 
 }

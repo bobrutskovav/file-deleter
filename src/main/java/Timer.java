@@ -16,7 +16,7 @@ class Timer {
 
     private void setNextDateToRun() {
         currentTime = LocalDateTime.now();
-        int minutesOrHours = parseParam(stringTimeToNext);
+        int minutesOrHours = Helper.parseParamInt(stringTimeToNext);
         if (stringTimeToNext.endsWith("h")) {
             nextDateToRun = currentTime.plusHours(minutesOrHours);
         } else if (stringTimeToNext.endsWith("m")) {
@@ -37,13 +37,6 @@ class Timer {
         setNextDateToRun();
     }
 
-    private int parseParam(String param) {
-        try {
-            return Integer.parseInt(param.replaceAll("\\D+", ""));
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + param);
-        }
-    }
 
     public boolean isInterrupt() {
         return isInterrupt;

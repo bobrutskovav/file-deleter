@@ -120,7 +120,7 @@ class Finder {
 
     private void updateDeleteDate() {
         if (periodToDelete != null) {
-            long paramValue = parseParam(periodToDelete);
+            long paramValue = Helper.parseParamLong(periodToDelete);
             LocalDateTime now = LocalDateTime.now();
             if (periodToDelete.endsWith("d")) deleteDate = now.minusDays(paramValue);
             else if (periodToDelete.endsWith("w")) deleteDate = now.minusWeeks(paramValue);
@@ -135,16 +135,6 @@ class Finder {
     public void setDeepSearch(boolean deepSearch) {
         isDeepSearch = deepSearch;
     }
-
-    //ToDo выделить какой нибудь хелпер(из таймера тоже)
-    private long parseParam(String param) {
-        try {
-            return Long.parseLong(param.replaceAll("\\D+", ""));
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid Parameter for -od flag : " + param);
-        }
-    }
-
 
     public void clearResultStorage() {
         result.clear();

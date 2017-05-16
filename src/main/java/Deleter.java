@@ -25,12 +25,12 @@ class Deleter {
                     System.out.println("Can't delete this files to bin,please get me a bug report on github.com/bobrutskovav");
                 }
             } else if (!isNeedDeleteToBin) {
-                for (File file :
-                        filesToDelete) {
+                filesToDelete.parallelStream().forEach(file -> {
                     System.out.println("Deleting... " + file.getName());
                     file.delete();
+                });
 
-                }
+
             }
 
             System.out.println("It's all clear!");

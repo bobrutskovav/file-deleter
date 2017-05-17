@@ -1,5 +1,7 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ABobrutskov on 04.05.2017.
@@ -19,19 +21,24 @@ class Application {
         deleter = new Deleter();
     }
 
-    private void doJob() {
+    private void doJob() throws IOException {
         String path = detector.getNormalizedCurrentDir();
         finder.setPathToFindIn(path);
         finder.setFileExtensionsToFind(fileExtensions);
-        ArrayList<Path> files = finder.findFiles();
+        List<Path> files = finder.findFiles();
         if (!files.isEmpty()) {
             deleter.deleteFiles(files, isNeedDeleteToBin);
+        }
+        files = finder.findEmptyFolders();
+        while (!files.isEmpty()) {
+            deleter.deleteFiles(files, false);
+            files = finder.findEmptyFolders();
         }
 
 
     }
 
-    public void start() {
+    public void start() throws IOException {
         if (isService) {
             while (!timer.isInterrupt()) {
                 doJob();

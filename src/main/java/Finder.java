@@ -7,6 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -19,7 +20,7 @@ class Finder {
     private ArrayList<String> fileExtensions;
     private LocalDateTime deleteDate;
 
-    private void findAllFilesInCurrentDirectory(ArrayList<Path> resultStash, Path path) throws IOException {
+    private void findAllFilesInCurrentDirectory(List<Path> resultStash, Path path) throws IOException {
         ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
         /**Получить все файлы
          * Пройти по всем файлам, спросить:
@@ -63,11 +64,11 @@ class Finder {
     }
 
 
-    public ArrayList<Path> findFiles() {
+    public List<Path> findFiles() {
         if (deleteDate == null) {
             updateDeleteDate();
         }
-        ArrayList<Path> result = new ArrayList<>();
+        List<Path> result = new ArrayList<>();
         try {
             findAllFilesInCurrentDirectory(result, pathToFindIn);
         } catch (IOException ex) {
@@ -142,6 +143,51 @@ class Finder {
 
     public void setDeepSearch(boolean deepSearch) {
         isDeepSearch = deepSearch;
+    }
+
+
+    public List<Path> findEmptyFolders() throws IOException {
+        List<Path> result = new ArrayList<>();
+        findEmptyFoldersInCurrentDir(result, pathToFindIn);
+        return result;
+
+    }
+
+    private List<Path> findAllFolders(Path pathToFindIn) {
+        ArrayList<Path> result = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(pathToFindIn)) {
+            for (Path entry : stream) {
+                if (Files.isDirectory(entry)) {
+                    result.add(entry);
+                }
+            }
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void findEmptyFoldersInCurrentDir(List<Path> result, Path pathToFindIn) throws IOException {
+        List<Path> foldersInCurrent = findAllFolders(pathToFindIn);
+
+        for (Path folder : foldersInCurrent) {
+            if (isDeepSearch && !isEmptyFolder(folder)) {
+                findEmptyFoldersInCurrentDir(result, folder);
+            } else if (isEmptyFolder(folder)) {
+                result.add(folder);
+            }
+        }
+    }
+
+    private boolean isEmptyFolder(Path folder) throws IOException {
+        DirectoryStream<Path> dirStream = Files.newDirectoryStream(folder);
+        try {
+            return !dirStream.iterator().hasNext();
+        } finally {
+            dirStream.close();
+        }
+
     }
 
 

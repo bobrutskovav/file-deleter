@@ -26,7 +26,6 @@ class Application {
         if (!files.isEmpty()) {
             deleter.setFilesToDelete(files);
             deleter.deleteFiles();
-            finder.clearResultStorage();
         }
 
 

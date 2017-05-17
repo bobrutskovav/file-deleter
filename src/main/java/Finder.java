@@ -14,11 +14,10 @@ class Finder {
     private String pathToFindIn;
     private String periodToDelete;
     private ArrayList<String> fileExtensions;
-    private ArrayList<File> result = new ArrayList<>();
     private LocalDateTime deleteDate;
 
-    private void findAllFilesInCurrentDirectory(String path) {
-        ArrayList<File> allFindedFiles = findAllFilesInCurrentDir(path);
+    private void findAllFilesInCurrentDirectory(ArrayList<File> resultStash, String path) {
+        ArrayList<File> allFilesAndDirs = findAllFilesInCurrentDir(path);
         //Получить все файлы
         /**Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия
@@ -27,15 +26,15 @@ class Finder {
          * полученый результат - прогнать на проверку:
          * если ты старый - в результат
          */
-        if (!allFindedFiles.isEmpty()) {
+        if (!allFilesAndDirs.isEmpty()) {
             for (File file :
-                    allFindedFiles) {
+                    allFilesAndDirs) {
                 if (isDeepSearch && file.isDirectory()) {
-                    findAllFilesInCurrentDirectory(file.getAbsolutePath());
+                    findAllFilesInCurrentDirectory(resultStash, file.getAbsolutePath());
                 } else {
                     if (isValidExtension(file)) {
                         if (isOlderThanDeleteDate(file)) {
-                            result.add(file);
+                            resultStash.add(file);
                         }
                     }
                 }
@@ -64,7 +63,8 @@ class Finder {
         if (deleteDate == null) {
             updateDeleteDate();
         }
-        findAllFilesInCurrentDirectory(pathToFindIn);
+        ArrayList<File> result = new ArrayList<>();
+        findAllFilesInCurrentDirectory(result, pathToFindIn);
         updateDeleteDate();
         return result;
     }
@@ -136,9 +136,6 @@ class Finder {
         isDeepSearch = deepSearch;
     }
 
-    public void clearResultStorage() {
-        result.clear();
-    }
 }
 
 

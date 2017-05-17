@@ -21,8 +21,8 @@ class Finder {
 
     private void findAllFilesInCurrentDirectory(ArrayList<Path> resultStash, Path path) throws IOException {
         ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
-        //Получить все файлы
-        /**Пройти по всем файлам, спросить:
+        /**Получить все файлы
+         * Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия
          * если ты файл, то:
          * прогнать файл по разширениям
@@ -101,22 +101,12 @@ class Finder {
         }
     }
 
-// --Commented out by Inspection START (12.05.2017 16:30):
-//    public String getPathToFindIn() {
-//        return pathToFindIn;
-//    }
-// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setPathToFindIn(String pathToFindIn) {
 
         this.pathToFindIn = Paths.get(pathToFindIn);
     }
 
-// --Commented out by Inspection START (12.05.2017 16:30):
-//    public ArrayList<String> getFileExtensionToFind() {
-//        return fileExtensions;
-//    }
-// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setFileExtensionsToFind(ArrayList<String> fileExtensionsToFind) {
         this.fileExtensions = fileExtensionsToFind;
@@ -129,6 +119,7 @@ class Finder {
             for (Path entry : stream) {
                 result.add(entry);
             }
+            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -21,7 +21,6 @@ class Deleter {
 
                 try {
                     File[] filesTemp = castPathListToArrrayFiles(filesToDelete);
-                    ;
                     utils32.moveToTrash(filesTemp);
                 } catch (IOException e) {
                     e.printStackTrace();

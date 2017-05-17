@@ -28,7 +28,7 @@ class CliHandler {
         options.addOption(olderThan);
         Option deepSearch = Option.builder("ds").desc("Set's flag of recursive search in directories of current catalog").longOpt("deepsearch").build();
         options.addOption(deepSearch);
-        Option isNotToBin = Option.builder("nb").desc("Set's flag of delete without bin, by default all files removes to bin, if your system support it").longOpt("nobin").build();
+        Option isNotToBin = Option.builder("nb").desc("Set's flag of delete without bin, by default all files removes to bin, if your system support it (Slowly bu safety").longOpt("nobin").build();
         options.addOption(isNotToBin);
     }
 

@@ -37,6 +37,7 @@ class Main {
 
         } catch (Exception e) {
             cliHandler.printCliHelp();
+            e.printStackTrace();
             System.exit(0);
         }
     }

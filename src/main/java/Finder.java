@@ -1,9 +1,12 @@
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -11,13 +14,13 @@ import java.util.TimeZone;
  */
 class Finder {
     private boolean isDeepSearch;
-    private String pathToFindIn;
+    private Path pathToFindIn;
     private String periodToDelete;
     private ArrayList<String> fileExtensions;
     private LocalDateTime deleteDate;
 
-    private void findAllFilesInCurrentDirectory(ArrayList<File> resultStash, String path) {
-        ArrayList<File> allFilesAndDirs = findAllFilesInCurrentDir(path);
+    private void findAllFilesInCurrentDirectory(ArrayList<Path> resultStash, Path path) throws IOException {
+        ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
         //Получить все файлы
         /**Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия
@@ -27,10 +30,10 @@ class Finder {
          * если ты старый - в результат
          */
         if (!allFilesAndDirs.isEmpty()) {
-            for (File file :
+            for (Path file :
                     allFilesAndDirs) {
-                if (isDeepSearch && file.isDirectory()) {
-                    findAllFilesInCurrentDirectory(resultStash, file.getAbsolutePath());
+                if (isDeepSearch && Files.isDirectory(file)) {
+                    findAllFilesInCurrentDirectory(resultStash, file);
                 } else {
                     if (isValidExtension(file)) {
                         if (isOlderThanDeleteDate(file)) {
@@ -42,11 +45,12 @@ class Finder {
         }
     }
 
-    private boolean isValidExtension(File file) {
+    private boolean isValidExtension(Path file) {
+        String fileName = file.getFileName().toString();
         if (fileExtensions.contains("all")) {
-            return !(file.getName().contains("TorrentDeleter") && file.getName().endsWith(".jar"));
+            return !(fileName.contains("TorrentDeleter") && fileName.endsWith(".jar"));
         }
-        String fileName = file.getName();
+
         boolean isValid = false;
         for (String ext :
                 fileExtensions) {
@@ -59,22 +63,28 @@ class Finder {
     }
 
 
-    public ArrayList<File> findFiles() {
+    public ArrayList<Path> findFiles() {
         if (deleteDate == null) {
             updateDeleteDate();
         }
-        ArrayList<File> result = new ArrayList<>();
-        findAllFilesInCurrentDirectory(result, pathToFindIn);
+        ArrayList<Path> result = new ArrayList<>();
+        try {
+            findAllFilesInCurrentDirectory(result, pathToFindIn);
+        } catch (IOException ex) {
+            System.out.println("Unable to find files, got errors");
+            ex.printStackTrace();
+        }
         updateDeleteDate();
         return result;
     }
 
 
-    private boolean isOlderThanDeleteDate(File file) {
+    private boolean isOlderThanDeleteDate(Path file) throws IOException {
         boolean isOld = true;
         if (deleteDate != null) {
             LocalDateTime dateOfLastModifedOfFile;
-            long currentlastModTimestamp = file.lastModified();
+            BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
+            long currentlastModTimestamp = attributes.lastModifiedTime().toMillis();
             dateOfLastModifedOfFile = parseLongToLocalDateTime(currentlastModTimestamp);
             isOld = deleteDate.isAfter(dateOfLastModifedOfFile);
         }
@@ -98,7 +108,8 @@ class Finder {
 // --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setPathToFindIn(String pathToFindIn) {
-        this.pathToFindIn = pathToFindIn;
+
+        this.pathToFindIn = Paths.get(pathToFindIn);
     }
 
 // --Commented out by Inspection START (12.05.2017 16:30):
@@ -112,10 +123,16 @@ class Finder {
     }
 
 
-    private ArrayList<File> findAllFilesInCurrentDir(String dirPath) {
-        File currentDir = new File(dirPath);
-        List<File> files = Arrays.asList(currentDir.listFiles());
-        return new ArrayList<>(files);
+    private ArrayList<Path> findAllFilesInCurrentDir(Path dirPath) {
+        ArrayList<Path> result = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
+            for (Path entry : stream) {
+                result.add(entry);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private void updateDeleteDate() {

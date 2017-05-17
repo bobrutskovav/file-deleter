@@ -1,4 +1,4 @@
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +11,7 @@ class Application {
     private final Deleter deleter;
     private Timer timer;
     private boolean isService;
+    private boolean isNeedDeleteToBin;
 
     public Application() {
         detector = new PathDetector();
@@ -22,10 +23,9 @@ class Application {
         String path = detector.getNormalizedCurrentDir();
         finder.setPathToFindIn(path);
         finder.setFileExtensionsToFind(fileExtensions);
-        ArrayList<File> files = finder.findFiles();
+        ArrayList<Path> files = finder.findFiles();
         if (!files.isEmpty()) {
-            deleter.setFilesToDelete(files);
-            deleter.deleteFiles();
+            deleter.deleteFiles(files, isNeedDeleteToBin);
         }
 
 
@@ -81,7 +81,7 @@ class Application {
     }
 
     public void setNeedDeleteToBin(boolean isNeedDeleteToBin) {
-        deleter.setNeedDeleteToBin(isNeedDeleteToBin);
+        this.isNeedDeleteToBin = isNeedDeleteToBin;
     }
 
 

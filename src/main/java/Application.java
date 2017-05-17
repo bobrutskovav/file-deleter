@@ -46,11 +46,6 @@ class Application {
         this.fileExtensions = fileExtension;
     }
 
-// --Commented out by Inspection START (12.05.2017 16:30):
-//    public ArrayList<String> getFileExtensions() {
-//        return fileExtensions;
-//    }
-// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public Timer getTimer() {
         return timer;
@@ -60,11 +55,6 @@ class Application {
         this.timer = timer;
     }
 
-// --Commented out by Inspection START (12.05.2017 16:30):
-//    public boolean isService() {
-//        return isService;
-//    }
-// --Commented out by Inspection STOP (12.05.2017 16:30)
 
     public void setService(boolean service) {
         isService = service;

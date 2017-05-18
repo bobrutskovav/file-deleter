@@ -29,7 +29,7 @@ class CliHandler {
         options.addOption(deepSearch);
         Option isNotToBin = Option.builder("nb").desc("Set's flag of delete without bin, by default all files removes to bin, if your system support it (Slowly bu safety").longOpt("nobin").build();
         options.addOption(isNotToBin);
-        Option ingoreExt = Option.builder("ie").desc("Ignore file's with extensions").longOpt("ingoreextensions").hasArgs().build();
+        Option ingoreExt = Option.builder("ie").desc("Files with this extensions will not be deleted").longOpt("ingoreextensions").hasArgs().build();
         options.addOption(ingoreExt);
     }
 

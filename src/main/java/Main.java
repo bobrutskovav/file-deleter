@@ -11,13 +11,12 @@ class Main {
 
         try {
             cliHandler.parse(args);
-
-            app = new Application();
-            ArrayList<String> fileExtensions = cliHandler.getFileExtension();
+            ArrayList<String> fileExtensions = cliHandler.getFileExtensions();
             if (fileExtensions.isEmpty()) {
                 fileExtensions.add(".torrent");
             }
-            app.setFileExtension(fileExtensions);
+            ArrayList<String> ingoredExtensions = cliHandler.getIgnoredFileExtensions();
+            app = new Application(fileExtensions, ingoredExtensions);
 
             if (cliHandler.isService()) {
                 app.setService(true);

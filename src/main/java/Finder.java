@@ -19,6 +19,7 @@ class Finder {
     private String periodToDelete;
     private ArrayList<String> fileExtensions;
     private LocalDateTime deleteDate;
+    private ArrayList<String> ignoredExtensions;
 
     private void findAllFilesInCurrentDirectory(List<Path> resultStash, Path path) throws IOException {
         ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
@@ -48,19 +49,26 @@ class Finder {
 
     private boolean isValidExtension(Path file) {
         String fileName = file.getFileName().toString();
+        if (fileName.contains("TorrentDeleter") && fileName.endsWith(".jar")) return false;
         if (fileExtensions.contains("all")) {
-            return !(fileName.contains("TorrentDeleter") && fileName.endsWith(".jar"));
+            if (ignoredExtensions.isEmpty()) return true;
+            else {
+                for (String iExt :
+                        ignoredExtensions) {
+                    if (fileName.endsWith(iExt)) return false;
+
+                }
+            }
+
         }
 
-        boolean isValid = false;
         for (String ext :
                 fileExtensions) {
             if (fileName.endsWith(ext)) {
-                isValid = true;
-                break;
+                return true;
             }
         }
-        return isValid;
+        return true;
     }
 
 
@@ -191,6 +199,9 @@ class Finder {
     }
 
 
+    public void setIgnoredExtensions(ArrayList<String> ignoredExtensions) {
+        this.ignoredExtensions = ignoredExtensions;
+    }
 }
 
 

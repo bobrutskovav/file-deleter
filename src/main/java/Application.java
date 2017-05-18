@@ -7,7 +7,6 @@ import java.util.List;
  * Created by ABobrutskov on 04.05.2017.
  */
 class Application {
-    private ArrayList<String> fileExtensions;
     private final PathDetector detector;
     private final Finder finder;
     private final Deleter deleter;
@@ -15,16 +14,17 @@ class Application {
     private boolean isService;
     private boolean isNeedDeleteToBin;
 
-    public Application() {
+    public Application(ArrayList<String> fileExtensions, ArrayList<String> ingoredExtensions) {
         detector = new PathDetector();
         finder = new Finder();
         deleter = new Deleter();
+        finder.setFileExtensionsToFind(fileExtensions);
+        finder.setIgnoredExtensions(ingoredExtensions);
     }
 
     private void doJob() throws IOException {
         String path = detector.getNormalizedCurrentDir();
         finder.setPathToFindIn(path);
-        finder.setFileExtensionsToFind(fileExtensions);
         List<Path> files = finder.findFiles();
         if (!files.isEmpty()) {
             deleter.deleteFiles(files, isNeedDeleteToBin);
@@ -47,10 +47,6 @@ class Application {
         } else {
             doJob();
         }
-    }
-
-    public void setFileExtension(ArrayList<String> fileExtension) {
-        this.fileExtensions = fileExtension;
     }
 
 

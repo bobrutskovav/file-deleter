@@ -2,7 +2,6 @@ import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by aleksx on 04.05.2017.
@@ -30,6 +29,8 @@ class CliHandler {
         options.addOption(deepSearch);
         Option isNotToBin = Option.builder("nb").desc("Set's flag of delete without bin, by default all files removes to bin, if your system support it (Slowly bu safety").longOpt("nobin").build();
         options.addOption(isNotToBin);
+        Option ingoreExt = Option.builder("ie").desc("Ignore file's with extensions").longOpt("ingoreextensions").hasArgs().build();
+        options.addOption(ingoreExt);
     }
 
     public void parse(String[] args) throws Exception {
@@ -42,13 +43,19 @@ class CliHandler {
         }
     }
 
-    public ArrayList<String> getFileExtension() {
-        String[] array = line.getOptionValues("fe");
-        List<String> tempList;
+    public ArrayList<String> getFileExtensions() {
+        return getSomeListStringFromOption("fe");
+    }
+
+    public ArrayList<String> getIgnoredFileExtensions() {
+        return getSomeListStringFromOption("ie");
+    }
+
+    private ArrayList<String> getSomeListStringFromOption(String opt) {
+        String[] array = line.getOptionValues(opt);
         ArrayList<String> result;
         if (array != null) {
-            tempList = Arrays.asList(array);
-            result = new ArrayList<>(tempList);
+            result = new ArrayList<>(Arrays.asList(array));
             return result;
         } else {
             result = new ArrayList<>();

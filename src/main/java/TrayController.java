@@ -3,13 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.stream.Stream;
 
 /**
  * Created by aleksx on 10.05.2017.
  */
 class TrayController {
-    private String[] fileExtensions;
     private SystemTray tray;
     private Image image;
     private TrayIcon icon;
@@ -52,8 +50,7 @@ class TrayController {
 
         icon = new TrayIcon(image, "Torrent Deleter");
         ActionListener actionListener = e -> {
-            StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running for files :");
-            Stream.of(fileExtensions).forEach(s -> massageBuffer.append("\\n " + s));
+            StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running");
             icon.displayMessage("Torrent Deleter Service",
                     massageBuffer.toString(),
                     TrayIcon.MessageType.INFO);

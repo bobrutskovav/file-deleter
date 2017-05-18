@@ -51,24 +51,26 @@ class Finder {
         String fileName = file.getFileName().toString();
         if (fileName.contains("TorrentDeleter") && fileName.endsWith(".jar")) return false;
         if (fileExtensions.contains("all")) {
-            if (ignoredExtensions.isEmpty()) return true;
-            else {
+            if (ignoredExtensions.isEmpty()) {
+                return true;
+            } else {
                 for (String iExt :
                         ignoredExtensions) {
-                    if (fileName.endsWith(iExt)) return false;
-
+                    if (fileName.endsWith(iExt)) {
+                        return false;
+                    }
                 }
-            }
-
-        }
-
-        for (String ext :
-                fileExtensions) {
-            if (fileName.endsWith(ext)) {
                 return true;
             }
+        } else {
+            for (String ext :
+                    fileExtensions) {
+                if (fileName.endsWith(ext)) {
+                    return true;
+                }
+            }
+            return false;
         }
-        return false;
     }
 
 

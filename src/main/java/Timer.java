@@ -33,6 +33,7 @@ class Timer {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            currentTime = LocalDateTime.now();
         }
         setNextDateToRun();
     }

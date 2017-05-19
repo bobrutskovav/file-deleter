@@ -23,6 +23,10 @@ class Finder {
 
     private void findAllFilesInCurrentDirectory(List<Path> resultStash, Path path) throws IOException {
         ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
+        Path ignore = Paths.get(path.toString() + "/.ignore");
+        if (allFilesAndDirs.contains(ignore)) {
+            return;
+        }
         /**Получить все файлы
          * Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия

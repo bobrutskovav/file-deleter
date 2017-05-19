@@ -25,6 +25,7 @@ class Finder {
         ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
         Path ignore = Paths.get(path.toString() + "/.ignore");
         if (allFilesAndDirs.contains(ignore)) {
+            System.out.println("Ignoring all files and catalogs here " + path.toString());
             return;
         }
         /**Получить все файлы

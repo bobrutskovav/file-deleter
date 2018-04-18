@@ -43,7 +43,7 @@ class Deleter {
 
 
     private File[] castPathListToArrrayFiles(List<Path> listPath) {
-        ArrayList<File> temp = new ArrayList<>();
+        List<File> temp = new ArrayList<>();
         listPath.forEach(f -> temp.add(f.toFile()));
         File[] arr = temp.toArray(new File[temp.size()]);
         return arr;

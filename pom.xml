@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.aleksx.workwithfiles</groupId>
-    <artifactId>TorrentDeleter</artifactId>
+    <artifactId>file-deleter</artifactId>
     <version>1.5-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
@@ -28,6 +29,15 @@
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
                 <configuration>
                     <archive>
                         <manifest>

@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +12,13 @@ class Application {
     private Timer timer;
     private boolean isService;
     private boolean isNeedDeleteToBin;
+    private List<String> fileExtensions;
 
-    public Application(ArrayList<String> fileExtensions, ArrayList<String> ingoredExtensions) {
+    public Application(List<String> fileExtensions, List<String> ingoredExtensions) {
         detector = new PathDetector();
         finder = new Finder();
         deleter = new Deleter();
+        this.fileExtensions = fileExtensions;
         finder.setFileExtensionsToFind(fileExtensions);
         finder.setIgnoredExtensions(ingoredExtensions);
     }
@@ -77,5 +78,7 @@ class Application {
         this.isNeedDeleteToBin = isNeedDeleteToBin;
     }
 
-
+    public List<String> getFileExtensions() {
+        return fileExtensions;
+    }
 }

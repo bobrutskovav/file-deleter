@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * Created by aleksx on 10.05.2017.
@@ -44,15 +45,17 @@ class TrayController {
         };
 
         popupMenu = new JPopupMenu();
-        JMenuItem defaultItem = new JMenuItem("Stop TD and Exit");
+        JMenuItem defaultItem = new JMenuItem("Stop FD and Exit");
         defaultItem.addActionListener(exitListener);
         popupMenu.add(defaultItem);
 
-        icon = new TrayIcon(image, "Torrent Deleter");
+        icon = new TrayIcon(image, "File Deleter");
         ActionListener actionListener = e -> {
-            StringBuffer massageBuffer = new StringBuffer("Torrent Deleter is running");
-            icon.displayMessage("Torrent Deleter Service",
-                    massageBuffer.toString(),
+            List<String> extensions = app.getFileExtensions();
+            StringBuffer messageBuffer = new StringBuffer("File Deleter is running \n");
+            extensions.forEach(ext -> messageBuffer.append(ext + "\n"));
+            icon.displayMessage("File Deleter Service",
+                    messageBuffer.toString(),
                     TrayIcon.MessageType.INFO);
         };
 

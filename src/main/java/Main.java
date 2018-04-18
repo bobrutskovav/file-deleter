@@ -1,5 +1,5 @@
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * by aleksx on 03.05.2017.
@@ -12,11 +12,11 @@ class Main {
 
         try {
             cliHandler.get().parse(args);
-            ArrayList<String> fileExtensions = cliHandler.get().getFileExtensions();
+            List<String> fileExtensions = cliHandler.get().getFileExtensions();
             if (fileExtensions.isEmpty()) {
                 fileExtensions.add(".torrent");
             }
-            ArrayList<String> ingoredExtensions = cliHandler.get().getIgnoredFileExtensions();
+            List<String> ingoredExtensions = cliHandler.get().getIgnoredFileExtensions();
             app = new Application(fileExtensions, ingoredExtensions);
 
             if (cliHandler.get().isService()) {

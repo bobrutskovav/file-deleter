@@ -17,12 +17,12 @@ class Finder {
     private boolean isDeepSearch;
     private Path pathToFindIn;
     private String periodToDelete;
-    private ArrayList<String> fileExtensions;
+    private List<String> fileExtensions;
     private LocalDateTime deleteDate;
-    private ArrayList<String> ignoredExtensions;
+    private List<String> ignoredExtensions;
 
     private void findAllFilesInCurrentDirectory(List<Path> resultStash, Path path) throws IOException {
-        ArrayList<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
+        List<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
         Path ignore = Paths.get(path.toString() + "/.ignore");
         if (allFilesAndDirs.contains(ignore)) {
             System.out.println("Ignoring all files and catalogs here " + path.toString());
@@ -124,13 +124,13 @@ class Finder {
     }
 
 
-    public void setFileExtensionsToFind(ArrayList<String> fileExtensionsToFind) {
+    public void setFileExtensionsToFind(List<String> fileExtensionsToFind) {
         this.fileExtensions = fileExtensionsToFind;
     }
 
 
-    private ArrayList<Path> findAllFilesInCurrentDir(Path dirPath) {
-        ArrayList<Path> result = new ArrayList<>();
+    private List<Path> findAllFilesInCurrentDir(Path dirPath) {
+        List<Path> result = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
             for (Path entry : stream) {
                 result.add(entry);
@@ -206,7 +206,7 @@ class Finder {
     }
 
 
-    public void setIgnoredExtensions(ArrayList<String> ignoredExtensions) {
+    public void setIgnoredExtensions(List<String> ignoredExtensions) {
         this.ignoredExtensions = ignoredExtensions;
     }
 }

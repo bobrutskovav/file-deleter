@@ -12,11 +12,11 @@ import java.util.List;
  */
 class Deleter {
     private final FileUtils utils32 = FileUtils.getInstance();
-
+    private boolean systemHasATrash = utils32.hasTrash();
     void deleteFiles(List<Path> filesToDelete, boolean isNeedDeleteToBin) {
         if (filesToDelete.size() > 0) {
 
-            if (isNeedDeleteToBin && utils32.hasTrash()) {
+            if (isNeedDeleteToBin && systemHasATrash) {
                 System.out.println("Deleting to bin... " + filesToDelete.toString());
 
                 try {
@@ -26,9 +26,9 @@ class Deleter {
                     e.printStackTrace();
                     System.out.println("Can't delete this files to bin,please get me a bug report on github.com/bobrutskovav");
                 }
-            } else if (!isNeedDeleteToBin) {
+            } else {
                 filesToDelete.parallelStream().forEach(file -> {
-                    System.out.println("Deleting... " + file.getFileName().toString());
+                    System.out.println("Deleting without bin... " + file.getFileName().toString());
                     try {
                         Files.delete(file);
                     } catch (IOException e) {

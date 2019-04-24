@@ -9,10 +9,11 @@ class PathDetector {
     String getNormalizedCurrentDir() {
         if (currentDirectory == null) {
             setCurrentDir();
-            int lastDotIndex = currentDirectory.lastIndexOf("\\.");
+            int lastDotIndex = currentDirectory.lastIndexOf(".");
             StringBuffer buffer = new StringBuffer(currentDirectory)
                     .delete(lastDotIndex, lastDotIndex + 2);
             currentDirectory = buffer.toString();
+            System.out.println("Current normalized directory : " + currentDirectory);
         }
 
         return currentDirectory;
@@ -21,7 +22,6 @@ class PathDetector {
     private void setCurrentDir() {
         File file = new File(".");
         currentDirectory = file.getAbsolutePath();
-        System.out.println("Current working directory : " + currentDirectory);
 
     }
 }

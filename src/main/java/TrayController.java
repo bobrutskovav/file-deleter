@@ -14,16 +14,19 @@ class TrayController {
     private TrayIcon icon;
     private JPopupMenu popupMenu;
     private Application app;
+    private static boolean isSystemSupportTray = SystemTray.isSupported();
 
+
+    public static boolean isSystemSupportTray() {
+        return isSystemSupportTray;
+    }
 
     public TrayController(Application appToControl) {
-        if (SystemTray.isSupported()) {
+
             this.app = appToControl;
             tray = SystemTray.getSystemTray();
             image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("/image/icon32.png"));
             setUpTray();
-
-        }
     }
 
     public void makeATray() {

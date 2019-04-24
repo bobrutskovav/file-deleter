@@ -85,7 +85,9 @@ class Finder {
         }
         List<Path> result = new ArrayList<>();
         try {
+            System.out.println("Find Files in directory " +  pathToFindIn);
             findAllFilesInCurrentDirectory(result, pathToFindIn);
+
         } catch (IOException ex) {
             System.out.println("Unable to find files, got errors");
             ex.printStackTrace();

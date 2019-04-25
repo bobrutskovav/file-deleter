@@ -146,7 +146,8 @@ class Finder {
         if (periodToDelete != null) {
             long paramValue = Helper.parseParamLong(periodToDelete);
             LocalDateTime now = LocalDateTime.now();
-            if (periodToDelete.endsWith("d")) deleteDate = now.minusDays(paramValue);
+            if (periodToDelete.endsWith("m")) deleteDate = now.minusMinutes(paramValue);
+            else if (periodToDelete.endsWith("d")) deleteDate = now.minusDays(paramValue);
             else if (periodToDelete.endsWith("w")) deleteDate = now.minusWeeks(paramValue);
             else if (periodToDelete.endsWith("mn")) deleteDate = now.minusMonths(paramValue);
         }

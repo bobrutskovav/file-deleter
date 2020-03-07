@@ -1,3 +1,5 @@
+package com.aleksx.workwithfiles.filedeleter;
+
 import java.io.File;
 
 /**

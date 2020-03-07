@@ -1,3 +1,5 @@
+package com.aleksx.workwithfiles.filedeleter;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -28,7 +30,7 @@ class Finder {
             System.out.println("Ignoring all files and catalogs here " + path.toString());
             return;
         }
-        /**Получить все файлы
+        /*Получить все файлы
          * Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия
          * если ты файл, то:
@@ -137,7 +139,6 @@ class Finder {
             for (Path entry : stream) {
                 result.add(entry);
             }
-            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -179,7 +180,6 @@ class Finder {
                     result.add(entry);
                 }
             }
-            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,11 +199,8 @@ class Finder {
     }
 
     private boolean isEmptyFolder(Path folder) throws IOException {
-        DirectoryStream<Path> dirStream = Files.newDirectoryStream(folder);
-        try {
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(folder)) {
             return !dirStream.iterator().hasNext();
-        } finally {
-            dirStream.close();
         }
 
     }

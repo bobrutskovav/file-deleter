@@ -1,3 +1,5 @@
+package com.aleksx.workwithfiles.filedeleter;
+
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;

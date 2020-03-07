@@ -1,3 +1,5 @@
+package com.aleksx.workwithfiles.filedeleter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -9,6 +11,8 @@ import java.util.List;
  * Created by aleksx on 10.05.2017.
  */
 class TrayController {
+    private static final String TRAY_ICON_RESOURCE_NAME = "/image/file.png";
+    private SettingsFrame settingsFrame;
     private SystemTray tray;
     private Image image;
     private TrayIcon icon;
@@ -23,10 +27,10 @@ class TrayController {
 
     public TrayController(Application appToControl) {
 
-            this.app = appToControl;
-            tray = SystemTray.getSystemTray();
-            image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("/image/icon32.png"));
-            setUpTray();
+        this.app = appToControl;
+        tray = SystemTray.getSystemTray();
+        image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource(TRAY_ICON_RESOURCE_NAME));
+        setUpTray();
     }
 
     public void makeATray() {
@@ -38,32 +42,41 @@ class TrayController {
     }
 
 
-
     private void setUpTray() {
 
-        ActionListener exitListener = e -> {
+        ActionListener exitListener = event -> {
             System.out.println("Exiting...");
             app.getTimer().setInterrupt(true);
+            tray.remove(icon);
             System.exit(0);
         };
 
+        ActionListener openSettingListener = event -> {
+            settingsFrame = new SettingsFrame();
+            settingsFrame.setVisible(true);
+            settingsFrame.init(true);
+        };
+
         popupMenu = new JPopupMenu();
-        JMenuItem defaultItem = new JMenuItem("Stop FD and Exit");
-        defaultItem.addActionListener(exitListener);
-        popupMenu.add(defaultItem);
+        JMenuItem closeAppButton = new JMenuItem("Stop FD and Exit");
+        JMenuItem openSettingButton = new JMenuItem("Open Settings");
+        openSettingButton.addActionListener(openSettingListener);
+        closeAppButton.addActionListener(exitListener);
+        popupMenu.add(closeAppButton);
+        popupMenu.add(openSettingButton);
 
         icon = new TrayIcon(image, "File Deleter");
-        ActionListener actionListener = e -> {
+        ActionListener clickOnIconListener = e -> {
             List<String> extensions = app.getFileExtensions();
             StringBuffer messageBuffer = new StringBuffer("File Deleter is running \n");
-            extensions.forEach(ext -> messageBuffer.append(ext + "\n"));
+            extensions.forEach(ext -> messageBuffer.append(ext).append("\n"));
             icon.displayMessage("File Deleter Service",
                     messageBuffer.toString(),
                     TrayIcon.MessageType.INFO);
         };
 
         icon.setImageAutoSize(true);
-        icon.addActionListener(actionListener);
+        icon.addActionListener(clickOnIconListener);
         icon.addMouseListener(new MouseAdapter() {
 
             @Override

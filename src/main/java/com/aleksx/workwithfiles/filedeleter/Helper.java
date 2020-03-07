@@ -1,7 +1,9 @@
+package com.aleksx.workwithfiles.filedeleter;
+
 /**
  * Created by Aleks on 13.05.2017.
  */
-public class Helper {
+class Helper {
 
     public static long parseParamLong(String param) {
         try {

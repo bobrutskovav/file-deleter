@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -5,14 +7,14 @@ import java.util.List;
 /**
  * Created by ABobrutskov on 04.05.2017.
  */
-class Application {
+public class Application {
     private final PathDetector detector;
     private final Finder finder;
     private final Deleter deleter;
     private Timer timer;
     private boolean isService;
     private boolean isNeedDeleteToBin;
-    private List<String> fileExtensions;
+    private final List<String> fileExtensions;
 
     public Application(List<String> fileExtensions, List<String> ingoredExtensions) {
         detector = new PathDetector();
@@ -31,8 +33,9 @@ class Application {
             deleter.deleteFiles(files, isNeedDeleteToBin);
         }
         files = finder.findEmptyFolders();
+        System.out.println("Delete Empty Folders if exists...");
         while (!files.isEmpty()) {
-            deleter.deleteFiles(files, false);
+            deleter.deleteFiles(files, isNeedDeleteToBin);
             files = finder.findEmptyFolders();
         }
 

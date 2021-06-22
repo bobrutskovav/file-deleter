@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ class CliHandler {
     private void setOptions() {
         options.addOption("h", "help", false, "Print help");
         options.addOption("s", "service", true, "Starts program like a service, set's rerun period, exmpl: 30m or 1h");
-        Option fe = Option.builder("fe").desc("File extension to delete ,exmpl: .exe or .part1.rar, the default value is .torrent , can gets one or more arguments , exmlp : .torrent .exe .other").hasArgs().longOpt("fileextensions").build();
+        Option fe = Option.builder("fe").desc("File extension to delete ,example: .exe or .part1.rar, the default value is .torrent , can gets one or more arguments , exmlp : .torrent .exe .other").hasArgs().longOpt("fileextensions").build();
         options.addOption(fe);
         Option olderThan = Option.builder("od").desc("Set's period after which the file will be deleted(counting from the date of last change of the file) example : -od 30d or -od 2w or -od 3mn").hasArg().longOpt("olderthan").build();
         options.addOption(olderThan);
@@ -59,13 +61,11 @@ class CliHandler {
 
     private List<String> getSomeListStringFromOption(String opt) {
         String[] array = line.getOptionValues(opt);
-        ArrayList<String> result;
         if (array != null) {
-            result = new ArrayList<>(Arrays.asList(array));
-            return result;
+            return new ArrayList<>(Arrays.asList(array));
         } else {
-            result = new ArrayList<>();
-            return result;
+            return new ArrayList<>();
+
         }
     }
 
@@ -91,7 +91,7 @@ class CliHandler {
 
     public void printCliHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("File Deleter", "Read following instructions for tuning this app",
+        formatter.printHelp("File ru.aleksx.filedeleter.Deleter", "Read following instructions for tuning this app",
                 options, "Developed by Aleksey Bobrutskov,\n alekssh1fter@gmail.com ,\n github.com/bobrutskovav");
     }
 

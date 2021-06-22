@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -20,7 +22,7 @@ class TrayController {
         if (SystemTray.isSupported()) {
             this.app = appToControl;
             tray = SystemTray.getSystemTray();
-            image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("/image/icon32.png"));
+            image = Toolkit.getDefaultToolkit().getImage(TrayController.class.getResource("image/icon32.png"));
             setUpTray();
 
         }
@@ -33,7 +35,6 @@ class TrayController {
             e.printStackTrace();
         }
     }
-
 
 
     private void setUpTray() {
@@ -49,12 +50,12 @@ class TrayController {
         defaultItem.addActionListener(exitListener);
         popupMenu.add(defaultItem);
 
-        icon = new TrayIcon(image, "File Deleter");
+        icon = new TrayIcon(image, "File ru.aleksx.filedeleter.Deleter");
         ActionListener actionListener = e -> {
             List<String> extensions = app.getFileExtensions();
-            StringBuffer messageBuffer = new StringBuffer("File Deleter is running \n");
+            var messageBuffer = new StringBuilder("File ru.aleksx.filedeleter.Deleter is running \n");
             extensions.forEach(ext -> messageBuffer.append(ext + "\n"));
-            icon.displayMessage("File Deleter Service",
+            icon.displayMessage("File ru.aleksx.filedeleter.Deleter Service",
                     messageBuffer.toString(),
                     TrayIcon.MessageType.INFO);
         };

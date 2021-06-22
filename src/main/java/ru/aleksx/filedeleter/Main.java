@@ -1,10 +1,12 @@
+package ru.aleksx.filedeleter;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
  * by aleksx on 03.05.2017.
  */
-class Main {
+public class Main {
     public static void main(String[] args) {
         Application app;
         TrayController controller;
@@ -38,7 +40,7 @@ class Main {
         } catch (Exception e) {
             cliHandler.get().printCliHelp();
             e.printStackTrace();
-            System.exit(0);
+            System.exit(1);
         }
     }
 

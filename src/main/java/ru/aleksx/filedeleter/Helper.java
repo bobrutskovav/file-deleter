@@ -1,7 +1,12 @@
+package ru.aleksx.filedeleter;
+
 /**
  * Created by Aleks on 13.05.2017.
  */
-public class Helper {
+class Helper {
+
+    private Helper() {
+    }
 
     public static long parseParamLong(String param) {
         try {

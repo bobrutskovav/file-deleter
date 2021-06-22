@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import java.io.File;
 
 /**
@@ -10,7 +12,7 @@ class PathDetector {
         if (currentDirectory == null) {
             setCurrentDir();
             int lastDotIndex = currentDirectory.lastIndexOf("\\.");
-            StringBuffer buffer = new StringBuffer(currentDirectory)
+            StringBuilder buffer = new StringBuilder(currentDirectory)
                     .delete(lastDotIndex, lastDotIndex + 2);
             currentDirectory = buffer.toString();
         }

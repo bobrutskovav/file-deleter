@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import java.time.LocalDateTime;
 
 /**

@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import java.io.File;
 
 /**
@@ -9,11 +11,10 @@ class PathDetector {
     String getNormalizedCurrentDir() {
         if (currentDirectory == null) {
             setCurrentDir();
-            int lastDotIndex = currentDirectory.lastIndexOf(".");
-            StringBuffer buffer = new StringBuffer(currentDirectory)
+            int lastDotIndex = currentDirectory.lastIndexOf("\\.");
+            StringBuilder buffer = new StringBuilder(currentDirectory)
                     .delete(lastDotIndex, lastDotIndex + 2);
             currentDirectory = buffer.toString();
-            System.out.println("Current normalized directory : " + currentDirectory);
         }
 
         return currentDirectory;
@@ -22,6 +23,7 @@ class PathDetector {
     private void setCurrentDir() {
         File file = new File(".");
         currentDirectory = file.getAbsolutePath();
+        System.out.println("Current working directory : " + currentDirectory);
 
     }
 }

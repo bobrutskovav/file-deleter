@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import com.sun.jna.platform.FileUtils;
 
 import java.io.File;
@@ -12,12 +14,12 @@ import java.util.List;
  */
 class Deleter {
     private final FileUtils utils32 = FileUtils.getInstance();
-    private boolean systemHasATrash = utils32.hasTrash();
-    void deleteFiles(List<Path> filesToDelete, boolean isNeedDeleteToBin) {
-        if (filesToDelete.size() > 0) {
 
-            if (isNeedDeleteToBin && systemHasATrash) {
-                System.out.println("Deleting to bin... " + filesToDelete.toString());
+    void deleteFiles(List<Path> filesToDelete, boolean isNeedDeleteToBin) {
+        if (!filesToDelete.isEmpty()) {
+
+            if (isNeedDeleteToBin && utils32.hasTrash()) {
+                System.out.println("Deleting to bin... " + filesToDelete);
 
                 try {
                     File[] filesTemp = castPathListToArrrayFiles(filesToDelete);
@@ -26,9 +28,9 @@ class Deleter {
                     e.printStackTrace();
                     System.out.println("Can't delete this files to bin,please get me a bug report on github.com/bobrutskovav");
                 }
-            } else {
+            } else if (!isNeedDeleteToBin) {
                 filesToDelete.parallelStream().forEach(file -> {
-                    System.out.println("Deleting without bin... " + file.getFileName().toString());
+                    System.out.println("Deleting... " + file.getFileName().toString());
                     try {
                         Files.delete(file);
                     } catch (IOException e) {
@@ -45,8 +47,7 @@ class Deleter {
     private File[] castPathListToArrrayFiles(List<Path> listPath) {
         List<File> temp = new ArrayList<>();
         listPath.forEach(f -> temp.add(f.toFile()));
-        File[] arr = temp.toArray(new File[temp.size()]);
-        return arr;
+        return temp.toArray(new File[temp.size()]);
     }
 
 

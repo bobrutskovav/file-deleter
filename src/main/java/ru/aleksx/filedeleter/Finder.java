@@ -1,3 +1,5 @@
+package ru.aleksx.filedeleter;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -25,7 +27,7 @@ class Finder {
         List<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
         Path ignore = Paths.get(path.toString() + "/.ignore");
         if (allFilesAndDirs.contains(ignore)) {
-            System.out.println("Ignoring all files and catalogs here " + path.toString());
+            System.out.println("Ignoring all files and catalogs here " + path);
             return;
         }
         /**Получить все файлы
@@ -54,19 +56,19 @@ class Finder {
 
     private boolean isValidExtension(Path file) {
         String fileName = file.getFileName().toString();
-        if (fileName.contains("TorrentDeleter") && fileName.endsWith(".jar")) return false;
+        if (fileName.contains("TorrentDeleter") && fileName.endsWith(".jar")) {
+            return false;
+        }
         if (fileExtensions.contains("all")) {
-            if (ignoredExtensions.isEmpty()) {
-                return true;
-            } else {
+            if (!ignoredExtensions.isEmpty()) {
                 for (String iExt :
                         ignoredExtensions) {
                     if (fileName.endsWith(iExt)) {
                         return false;
                     }
                 }
-                return true;
             }
+            return true;
         } else {
             for (String ext :
                     fileExtensions) {
@@ -85,9 +87,7 @@ class Finder {
         }
         List<Path> result = new ArrayList<>();
         try {
-            System.out.println("Find Files in directory " +  pathToFindIn);
             findAllFilesInCurrentDirectory(result, pathToFindIn);
-
         } catch (IOException ex) {
             System.out.println("Unable to find files, got errors");
             ex.printStackTrace();
@@ -111,12 +111,11 @@ class Finder {
 
 
     private LocalDateTime parseLongToLocalDateTime(long timestamp) {
-        {
-            if (timestamp == 0)
-                return null;
-            return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
-                    .getDefault().toZoneId());
+        if (timestamp == 0) {
+            return null;
         }
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
+                .getDefault().toZoneId());
     }
 
 
@@ -137,7 +136,6 @@ class Finder {
             for (Path entry : stream) {
                 result.add(entry);
             }
-            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,11 +145,14 @@ class Finder {
     private void updateDeleteDate() {
         if (periodToDelete != null) {
             long paramValue = Helper.parseParamLong(periodToDelete);
-            LocalDateTime now = LocalDateTime.now();
-            if (periodToDelete.endsWith("m")) deleteDate = now.minusMinutes(paramValue);
-            else if (periodToDelete.endsWith("d")) deleteDate = now.minusDays(paramValue);
-            else if (periodToDelete.endsWith("w")) deleteDate = now.minusWeeks(paramValue);
-            else if (periodToDelete.endsWith("mn")) deleteDate = now.minusMonths(paramValue);
+            var now = LocalDateTime.now();
+            if (periodToDelete.endsWith("d")) {
+                deleteDate = now.minusDays(paramValue);
+            } else if (periodToDelete.endsWith("w")) {
+                deleteDate = now.minusWeeks(paramValue);
+            } else if (periodToDelete.endsWith("mn")) {
+                deleteDate = now.minusMonths(paramValue);
+            }
         }
     }
 
@@ -179,7 +180,6 @@ class Finder {
                     result.add(entry);
                 }
             }
-            stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,11 +199,8 @@ class Finder {
     }
 
     private boolean isEmptyFolder(Path folder) throws IOException {
-        DirectoryStream<Path> dirStream = Files.newDirectoryStream(folder);
-        try {
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(folder)) {
             return !dirStream.iterator().hasNext();
-        } finally {
-            dirStream.close();
         }
 
     }

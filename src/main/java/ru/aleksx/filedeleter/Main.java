@@ -25,9 +25,10 @@ public class Main {
                 app.setService(true);
                 String timeToRestart = cliHandler.get().getCooldownTime();
                 app.setTimer(new Timer(timeToRestart));
-                controller = new TrayController(app);
-                controller.makeATray();
-
+                if (TrayController.isSystemSupportTray()){
+                    controller = new TrayController(app);
+                    controller.makeATray();
+                }
             }
             String isOlderValue = cliHandler.get().getOlderThenPerion();
             app.setPeriodToDelete(isOlderValue);

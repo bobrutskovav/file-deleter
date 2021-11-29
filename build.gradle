@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.mikeneck.graalvm-native-image' version 'v1.4.1'
 }
 
 group = 'ru.aleksx'
@@ -9,10 +10,7 @@ targetCompatibility = JavaVersion.VERSION_11
 
 
 repositories {
-    //mavenCentral()
-    maven {
-        url "https://nexus.mir/repository/maven-proxy-group/"
-    }
+    mavenCentral()
 }
 
 jar {
@@ -29,5 +27,25 @@ jar {
 
 dependencies {
     implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    implementation group: 'net.java.dev.jna', name: 'jna-platform', version: '5.8.0'
+}
+
+
+nativeImage {
+    graalVmHome = System.getProperty("JAVA_HOME")
+    mainClass = 'ru.aleksx.filedeleter.Main' // Deprecated, use buildType.executable.main as follows instead.
+    executableName = "file-deleter-native-${project.version}"
+    outputDirectory = file("$buildDir/bin")
+    arguments {
+        add '--no-fallback'
+        add '--enable-all-security-services'
+//        add options.traceClassInitialization('com.example.MyDataProvider,com.example.MyDataConsumer')
+//        add '--initialize-at-run-time=com.example.runtime'
+        add '--report-unsupported-elements-at-runtime'
+        add '--static'
+    }
+}
+
+generateNativeImageConfig {
+    enabled = true
+    byRunningApplicationWithoutArguments()
 }

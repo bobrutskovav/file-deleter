@@ -2,9 +2,7 @@ package ru.aleksx.filedeleter;
 
 import org.apache.commons.cli.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by aleksx on 04.05.2017.
@@ -22,6 +20,7 @@ class CliHandler {
 
 
     private void setOptions() {
+        options.addOption("d","dir",true,"Absolute path to clear");
         options.addOption("h", "help", false, "Print help");
         options.addOption("s", "service", true, "Starts program like a service, set's rerun period, exmpl: 30m or 1h");
         Option fe = Option.builder("fe").desc("File extension to delete ,example: .exe or .part1.rar, the default value is .torrent , can gets one or more arguments , exmlp : .torrent .exe .other").hasArgs().longOpt("fileextensions").build();
@@ -36,7 +35,7 @@ class CliHandler {
         options.addOption(ingoreExt);
     }
 
-    public void parse(String[] args) throws Exception {
+    public void parse(String[] args) {
 
         DefaultParser parser = new DefaultParser();
         try {
@@ -87,6 +86,11 @@ class CliHandler {
 
     public boolean getIsNotToBin() {
         return !line.hasOption("nb");
+    }
+
+    public List<String> getTargetPaths() {
+        var paths = line.getOptionValue("d");
+        return paths == null ? new ArrayList<>() : Arrays.asList(paths.split(";"));
     }
 
     public void printCliHelp() {

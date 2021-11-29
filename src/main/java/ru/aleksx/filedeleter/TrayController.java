@@ -11,12 +11,12 @@ import java.util.List;
  * Created by aleksx on 10.05.2017.
  */
 class TrayController {
-    private SystemTray tray;
-    private Image image;
+    private final SystemTray tray;
+    private final Image image;
     private TrayIcon icon;
     private JPopupMenu popupMenu;
-    private Application app;
-    private static boolean isSystemSupportTray = SystemTray.isSupported();
+    private final Application app;
+    private static final boolean isSystemSupportTray = SystemTray.isSupported();
 
 
     public static boolean isSystemSupportTray() {
@@ -44,7 +44,7 @@ class TrayController {
 
         ActionListener exitListener = e -> {
             System.out.println("Exiting...");
-            app.getTimer().setInterrupt(true);
+            app.interrupt();
             System.exit(0);
         };
 
@@ -55,9 +55,9 @@ class TrayController {
 
         icon = new TrayIcon(image, "File ru.aleksx.filedeleter.Deleter");
         ActionListener actionListener = e -> {
-            List<String> extensions = app.getFileExtensions();
+            List<String> extensions = app.getFileExtansions();
             var messageBuffer = new StringBuilder("File ru.aleksx.filedeleter.Deleter is running \n");
-            extensions.forEach(ext -> messageBuffer.append(ext + "\n"));
+            extensions.forEach(ext -> messageBuffer.append(ext).append("\n"));
             icon.displayMessage("File ru.aleksx.filedeleter.Deleter Service",
                     messageBuffer.toString(),
                     TrayIcon.MessageType.INFO);

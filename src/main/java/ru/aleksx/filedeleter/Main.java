@@ -10,36 +10,39 @@ public class Main {
     public static void main(String[] args) {
         Application app;
         TrayController controller;
-        WeakReference<CliHandler> cliHandler = new WeakReference<>(new CliHandler());
+        CliHandler cliHandler = new CliHandler();
 
         try {
-            cliHandler.get().parse(args);
-            List<String> fileExtensions = cliHandler.get().getFileExtensions();
+            cliHandler.parse(args);
+            var fileExtensions = cliHandler.getFileExtensions();
             if (fileExtensions.isEmpty()) {
                 fileExtensions.add(".torrent");
             }
-            List<String> ingoredExtensions = cliHandler.get().getIgnoredFileExtensions();
-            app = new Application(fileExtensions, ingoredExtensions);
+            var ingoredExtensions = cliHandler.getIgnoredFileExtensions();
+            var targetDirs = cliHandler.getTargetPaths();
+            if (targetDirs.isEmpty()) {
+                targetDirs.add(System.getProperty("user.dir"));
+            }
+            app = new Application(fileExtensions,
+                    ingoredExtensions,
+                    targetDirs,
+                    cliHandler.getCooldownTime(),
+                    cliHandler.getOlderThenPerion(),
+                    cliHandler.isService(),
+                    cliHandler.getDeepSearch(),
+                    cliHandler.getIsNotToBin());
 
-            if (cliHandler.get().isService()) {
-                app.setService(true);
-                String timeToRestart = cliHandler.get().getCooldownTime();
-                app.setTimer(new Timer(timeToRestart));
-                if (TrayController.isSystemSupportTray()){
+            if (cliHandler.isService()) {
+                if (TrayController.isSystemSupportTray()) {
                     controller = new TrayController(app);
                     controller.makeATray();
                 }
             }
-            String isOlderValue = cliHandler.get().getOlderThenPerion();
-            app.setPeriodToDelete(isOlderValue);
-            app.setDeepSearch(cliHandler.get().getDeepSearch());
-            app.setNeedDeleteToBin(cliHandler.get().getIsNotToBin());
-
             app.start();
             System.exit(0);
 
         } catch (Exception e) {
-            cliHandler.get().printCliHelp();
+            cliHandler.printCliHelp();
             e.printStackTrace();
             System.exit(1);
         }

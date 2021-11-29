@@ -16,12 +16,24 @@ import java.util.TimeZone;
  * by aleksx on 03.05.2017.
  */
 class Finder {
-    private boolean isDeepSearch;
+    private final boolean isDeepSearch;
     private Path pathToFindIn;
     private String periodToDelete;
-    private List<String> fileExtensions;
+    private final List<String> fileExtensions;
     private LocalDateTime deleteDate;
-    private List<String> ignoredExtensions;
+    private final List<String> ignoredExtensions;
+
+    public Finder(Path path,
+                  boolean isDeepSearch,
+                  String periodToDelete,
+                  List<String> fileExtensions,
+                  List<String> ignoredExtensions) {
+        this.pathToFindIn = path;
+        this.isDeepSearch = isDeepSearch;
+        this.periodToDelete = periodToDelete;
+        this.fileExtensions = fileExtensions;
+        this.ignoredExtensions = ignoredExtensions;
+    }
 
     private void findAllFilesInCurrentDirectory(List<Path> resultStash, Path path) throws IOException {
         List<Path> allFilesAndDirs = findAllFilesInCurrentDir(path);
@@ -30,7 +42,7 @@ class Finder {
             System.out.println("Ignoring all files and catalogs here " + path);
             return;
         }
-        /**Получить все файлы
+        /*Получить все файлы
          * Пройти по всем файлам, спросить:
          * если ты директротия - рекурсия
          * если ты файл, то:
@@ -100,11 +112,11 @@ class Finder {
     private boolean isOlderThanDeleteDate(Path file) throws IOException {
         boolean isOld = true;
         if (deleteDate != null) {
-            LocalDateTime dateOfLastModifedOfFile;
+            LocalDateTime dateOfLastModifiedOfFile;
             BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
-            long currentlastModTimestamp = attributes.lastModifiedTime().toMillis();
-            dateOfLastModifedOfFile = parseLongToLocalDateTime(currentlastModTimestamp);
-            isOld = deleteDate.isAfter(dateOfLastModifedOfFile);
+            long currentLastModTimestamp = attributes.lastModifiedTime().toMillis();
+            dateOfLastModifiedOfFile = parseLongToLocalDateTime(currentLastModTimestamp);
+            isOld = deleteDate.isAfter(dateOfLastModifiedOfFile);
         }
         return isOld;
     }
@@ -112,21 +124,10 @@ class Finder {
 
     private LocalDateTime parseLongToLocalDateTime(long timestamp) {
         if (timestamp == 0) {
-            return null;
+            return LocalDateTime.now();
         }
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
                 .getDefault().toZoneId());
-    }
-
-
-    public void setPathToFindIn(String pathToFindIn) {
-
-        this.pathToFindIn = Paths.get(pathToFindIn);
-    }
-
-
-    public void setFileExtensionsToFind(List<String> fileExtensionsToFind) {
-        this.fileExtensions = fileExtensionsToFind;
     }
 
 
@@ -160,9 +161,6 @@ class Finder {
         this.periodToDelete = periodToDelete;
     }
 
-    public void setDeepSearch(boolean deepSearch) {
-        isDeepSearch = deepSearch;
-    }
 
 
     public List<Path> findEmptyFolders() throws IOException {
@@ -205,10 +203,6 @@ class Finder {
 
     }
 
-
-    public void setIgnoredExtensions(List<String> ignoredExtensions) {
-        this.ignoredExtensions = ignoredExtensions;
-    }
 }
 
 

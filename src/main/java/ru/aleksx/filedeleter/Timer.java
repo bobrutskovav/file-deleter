@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
  */
 class Timer {
     private LocalDateTime nextDateToRun;
-    private LocalDateTime currentTime;
     private boolean isInterrupt;
     private final String stringTimeToNext;
 
@@ -17,25 +16,26 @@ class Timer {
     }
 
     private void setNextDateToRun() {
-        currentTime = LocalDateTime.now();
-        int minutesOrHours = Helper.parseParamInt(stringTimeToNext);
-        if (stringTimeToNext.endsWith("h")) {
-            nextDateToRun = currentTime.plusHours(minutesOrHours);
-        } else if (stringTimeToNext.endsWith("m")) {
-            nextDateToRun = currentTime.plusMinutes(minutesOrHours);
-        } else {
-            throw new IllegalArgumentException("Invalid Parameter for -s flag : " + stringTimeToNext);
+        if (stringTimeToNext != null) {
+            var currentTime = LocalDateTime.now();
+            int minutesOrHours = Helper.parseParamInt(stringTimeToNext);
+            if (stringTimeToNext.endsWith("h")) {
+                nextDateToRun = currentTime.plusHours(minutesOrHours);
+            } else if (stringTimeToNext.endsWith("m")) {
+                nextDateToRun = currentTime.plusMinutes(minutesOrHours);
+            } else {
+                throw new IllegalArgumentException("Invalid Parameter for -s flag : " + stringTimeToNext);
+            }
         }
     }
 
     public void waitForNextJob() {
-        while (currentTime.isBefore(nextDateToRun)) {
+        while (LocalDateTime.now().isBefore(nextDateToRun)) {
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            currentTime = LocalDateTime.now();
         }
         setNextDateToRun();
     }
